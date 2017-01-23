@@ -29,8 +29,4 @@ cmake -INSTALL_DIR:STRING="%PREFIX%" \
           -DBUILD_MODULE_Visualization:BOOLEAN=OFF \
           ../occt-7.1.0
 
-make -j 5
-
-          
-          
-
+make -j 5  | grep -v "Building CXX"
