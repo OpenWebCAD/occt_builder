@@ -36,4 +36,12 @@ CALL cmake -INSTALL_DIR:STRING="%PREFIX%" ^
 ECHO -----------------------------------------------------------------
 ECHO       BUILDING SOLUTION
 ECHO -----------------------------------------------------------------
-msbuild occt.sln
+SET VERBOSITY=quiet
+REM SET VERBOSITY=minimal
+
+REM msbuild /m oce.sln
+CALL msbuild /m occt.sln /p:Configuration=Release /verbosity:%VERBOSITY% /consoleloggerparameters:Summary;ShowTimestamp
+
+ECHO -----------------------------------------------------------------
+ECHO       BUILDING SOLUTION   -> DONE !
+ECHO -----------------------------------------------------------------
