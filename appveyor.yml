@@ -1,0 +1,9 @@
+init:
+  - git config --global core.autocrlf input
+
+clone_folder: c:\projects\node-occ
+clone_depth: 5
+
+install:
+  - cmd: build_occt.bat
+  
