@@ -7,6 +7,9 @@ clone_depth: 5
 install:
   - cmd: build_occt.bat
 
+build_script:
+  - cmd: ECHO BUILD !
+  
 build: off  
 deploy: off
 
