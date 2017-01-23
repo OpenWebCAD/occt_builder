@@ -1,6 +1,6 @@
 diff -Naur occt-7.1.0-orig/adm/cmake/cotire.cmake occt-7.1.0/adm/cmake/cotire.cmake
 --- occt-7.1.0-orig/adm/cmake/cotire.cmake	1970-01-01 01:00:00.000000000 +0100
-+++ occt-7.1.0/adm/cmake/cotire.cmake	2017-01-23 21:25:27.116184200 +0100
++++ occt-7.1.0/adm/cmake/cotire.cmake	2017-01-23 23:41:06.562519000 +0100
 @@ -0,0 +1,4008 @@
 +# - cotire (compile time reducer)
 +#
@@ -4012,7 +4012,7 @@ diff -Naur occt-7.1.0-orig/adm/cmake/cotire.cmake occt-7.1.0/adm/cmake/cotire.cm
 +endif()
 diff -Naur occt-7.1.0-orig/adm/cmake/occt_toolkit.cmake occt-7.1.0/adm/cmake/occt_toolkit.cmake
 --- occt-7.1.0-orig/adm/cmake/occt_toolkit.cmake	2016-11-25 11:50:18.000000000 +0100
-+++ occt-7.1.0/adm/cmake/occt_toolkit.cmake	2017-01-23 21:26:45.162354700 +0100
++++ occt-7.1.0/adm/cmake/occt_toolkit.cmake	2017-01-23 23:41:06.562519000 +0100
 @@ -256,4 +256,6 @@
  
  if (BUILD_SHARED_LIBS)
@@ -4022,7 +4022,7 @@ diff -Naur occt-7.1.0-orig/adm/cmake/occt_toolkit.cmake occt-7.1.0/adm/cmake/occ
  endif()
 diff -Naur occt-7.1.0-orig/adm/MODULES occt-7.1.0/adm/MODULES
 --- occt-7.1.0-orig/adm/MODULES	2016-11-25 11:50:18.000000000 +0100
-+++ occt-7.1.0/adm/MODULES	2017-01-23 21:54:38.300929400 +0100
++++ occt-7.1.0/adm/MODULES	2017-01-23 23:41:06.562519000 +0100
 @@ -3,5 +3,6 @@
  ModelingAlgorithms TKGeomAlgo TKTopAlgo TKPrim TKBO TKBool TKHLR TKFillet TKOffset TKFeat TKMesh TKXMesh TKShHealing
  Visualization TKService TKV3d TKOpenGl TKMeshVS TKIVtk TKD3DHost
@@ -4033,7 +4033,7 @@ diff -Naur occt-7.1.0-orig/adm/MODULES occt-7.1.0/adm/MODULES
  Draw TKDraw TKTopTest TKViewerTest TKXSDRAW TKDCAF TKXDEDRAW TKTObjDRAW TKQADraw TKIVtkDraw DRAWEXE
 diff -Naur occt-7.1.0-orig/CMakeLists.txt occt-7.1.0/CMakeLists.txt
 --- occt-7.1.0-orig/CMakeLists.txt	2016-11-25 11:50:18.000000000 +0100
-+++ occt-7.1.0/CMakeLists.txt	2017-01-23 21:28:41.825912200 +0100
++++ occt-7.1.0/CMakeLists.txt	2017-01-23 23:41:06.566520999 +0100
 @@ -1,5 +1,11 @@
  cmake_minimum_required (VERSION 2.8.12 FATAL_ERROR)
  
@@ -4048,7 +4048,7 @@ diff -Naur occt-7.1.0-orig/CMakeLists.txt occt-7.1.0/CMakeLists.txt
  set (CMAKE_CONFIGURATION_TYPES Release Debug RelWithDebInfo CACHE INTERNAL "" FORCE)
 diff -Naur occt-7.1.0-orig/src/Geom/Geom_Ellipse.cxx occt-7.1.0/src/Geom/Geom_Ellipse.cxx
 --- occt-7.1.0-orig/src/Geom/Geom_Ellipse.cxx	2016-11-25 11:50:18.000000000 +0100
-+++ occt-7.1.0/src/Geom/Geom_Ellipse.cxx	2017-01-23 22:03:42.136216200 +0100
++++ occt-7.1.0/src/Geom/Geom_Ellipse.cxx	2017-01-23 23:41:06.566520999 +0100
 @@ -31,7 +31,6 @@
  
  IMPLEMENT_STANDARD_RTTIEXT(Geom_Ellipse,Geom_Conic)
@@ -4068,7 +4068,7 @@ diff -Naur occt-7.1.0-orig/src/Geom/Geom_Ellipse.cxx occt-7.1.0/src/Geom/Geom_El
  
 diff -Naur occt-7.1.0-orig/src/Message/Message_ProgressScale.cxx occt-7.1.0/src/Message/Message_ProgressScale.cxx
 --- occt-7.1.0-orig/src/Message/Message_ProgressScale.cxx	2016-11-25 11:50:18.000000000 +0100
-+++ occt-7.1.0/src/Message/Message_ProgressScale.cxx	2017-01-23 22:01:49.990806300 +0100
++++ occt-7.1.0/src/Message/Message_ProgressScale.cxx	2017-01-23 23:41:06.570523000 +0100
 @@ -15,8 +15,8 @@
  #include <Message_ProgressScale.hxx>
  #include <TCollection_HAsciiString.hxx>
@@ -4100,9 +4100,31 @@ diff -Naur occt-7.1.0-orig/src/Message/Message_ProgressScale.cxx occt-7.1.0/src/
    if ( ! myInfinite )
      return myMin + ( myMax - myMin ) * ( val - myFirst ) / ( myLast - myFirst );
  //  Standard_Real x = log ( ( val - myFirst ) / ( myLast - val ) ); // exponent
+diff -Naur occt-7.1.0-orig/src/OSD/OSD_signal.cxx occt-7.1.0/src/OSD/OSD_signal.cxx
+--- occt-7.1.0-orig/src/OSD/OSD_signal.cxx	2016-11-25 11:50:18.000000000 +0100
++++ occt-7.1.0/src/OSD/OSD_signal.cxx	2017-01-24 00:14:21.899689000 +0100
+@@ -616,7 +616,8 @@
+ #include <pthread.h>
+ 
+ #ifdef __linux__
+-#include <fenv.h>
++#include  <cfenv>
++//#include  <fenv.h>
+ static Standard_Boolean fFltExceptions = Standard_False;
+ #endif
+ 
+@@ -800,7 +801,7 @@
+     (*ADR_ACT_SIGIO_HANDLER)() ;
+ #ifdef __linux__
+   if (fFltExceptions)
+-    feenableexcept (FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW);
++     feenableexcept (FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW);
+     //feenableexcept (FE_INVALID | FE_DIVBYZERO);
+ #endif
+   sigset_t set;
 diff -Naur occt-7.1.0-orig/src/Standard/Standard_OutOfMemory.cxx occt-7.1.0/src/Standard/Standard_OutOfMemory.cxx
 --- occt-7.1.0-orig/src/Standard/Standard_OutOfMemory.cxx	2016-11-25 11:50:18.000000000 +0100
-+++ occt-7.1.0/src/Standard/Standard_OutOfMemory.cxx	2017-01-23 22:00:07.462834300 +0100
++++ occt-7.1.0/src/Standard/Standard_OutOfMemory.cxx	2017-01-23 23:41:06.570523000 +0100
 @@ -15,6 +15,10 @@
  
  #include <Standard_OutOfMemory.hxx>
