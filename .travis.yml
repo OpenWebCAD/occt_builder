@@ -1,0 +1,23 @@
+language: cpp
+
+os:
+  - linux
+  - osx
+  
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
+    - cmake-2.8.2
+    
+
+install:
+   - bash build_occt.sh
+   
+build:
+
+    
+    
+  
