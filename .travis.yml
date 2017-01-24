@@ -17,7 +17,7 @@ install:
 script:
 - echo Hello
 - cd build ; make install >>/dev/null ; cd ..
-- cd dist ; tar -cvf occt-7.1.0.${TRAVIS_OS_NAME}.tgz ./occt-7.1.0
+- cd dist ; tar -cf occt-7.1.0.${TRAVIS_OS_NAME}.tgz ./occt-7.1.0
 deploy:
   provider: releases
   api_key: 
