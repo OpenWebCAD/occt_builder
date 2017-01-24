@@ -14,6 +14,8 @@ cd ..
 
 mkdir build
 cd build
+export CCACHE_SLOPPINESS="pch_defines;time_macros"
+
 cmake -INSTALL_DIR:STRING="./dist/occt-7.1.0" \
           -DCMAKE_SUPPRESS_REGENERATION:BOOL=ON  \
           -DBUILD_SHARED_LIBS:BOOL=OFF \
