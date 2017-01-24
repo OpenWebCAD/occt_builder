@@ -14,12 +14,12 @@ cd ..
 
 mkdir build
 cd build
-cmake -INSTALL_DIR:STRING="%PREFIX%" \
+cmake -INSTALL_DIR:STRING="./dist/occt-7.1.0" \
           -DCMAKE_SUPPRESS_REGENERATION:BOOL=ON  \
           -DBUILD_SHARED_LIBS:BOOL=OFF \
           -DBUILD_TESTING:BOOLEAN=OFF \
           -DBUILD_MODULE_ApplicationFramework:BOOLEAN=OFF \
-          -DBUILD_MODULE_DataExchange:BOOLEAN=OFF \
+          -DBUILD_MODULE_DataExchange:BOOLEAN=ON \
           -DBUILD_MODULE_DataExchange2:BOOLEAN=OFF \
           -DBUILD_MODULE_Draw:BOOLEAN=OFF \
           -DBUILD_MODULE_FoundationClasses:BOOLEAN=ON \
