@@ -19,6 +19,9 @@ addons:
 
 install:
    - bash build_occt.sh
+  
+script:
+   - echo Hello
    
 build:
 
