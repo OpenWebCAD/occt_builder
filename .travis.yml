@@ -15,9 +15,7 @@ addons:
 install:
 - bash build_occt.sh
 script:
-- echo Hello
-- cd build ; make install >>/dev/null ; cd ..
-- cd dist ; tar -cf occt-7.1.0.${TRAVIS_OS_NAME}.tgz ./occt-7.1.0
+- make package
 deploy:
   provider: releases
   api_key: 
