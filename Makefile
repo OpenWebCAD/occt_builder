@@ -1,5 +1,5 @@
 prebuild:
-	sudo ./build_occt.sh
+	sudo bash ./build_occt.sh
 make: 
 	cd build && make -j4
 install: 
