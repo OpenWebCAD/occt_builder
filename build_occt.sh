@@ -13,6 +13,8 @@ echo "Depends:"$3 >> /tmp/$1-$2/DEBIAN/control
 echo "Maintainer:verdun@splitted-desktop.com" >> /tmp/$1-$2/DEBIAN/control
 echo "Homepage:http://ruggedpod.qyshare.com" >> /tmp/$1-$2/DEBIAN/control
 echo "Description:TEST PACKAGE" >> /tmp/$1-$2/DEBIAN/control
+ls -lt /tmp/stage
+cat /tmp/stage | wc -l
 file_list=`ls -ltd $(find /usr/bin) | awk '{ print $9}'`
 file_list2=`ls -ltd $(find /usr/share) | awk '{ print $9}'`
 file_list3=`ls -ltd $(find /usr/include) | awk '{ print $9}'`
