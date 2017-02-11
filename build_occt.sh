@@ -1,6 +1,6 @@
 
 
-if [! -f occt7.1.0.tgz ]
+if [ ! -f occt7.1.0.tgz ]
 then 
   curl  -L -o occt7.1.0.tgz "http://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=89aebdea8d6f4d15cfc50e9458cd8e2e25022326;sf=tgz"
   tar -xf occt7.1.0.tgz
