@@ -32,7 +32,7 @@ done
 current_dir=`pwd`
 cd /tmp
 dpkg-deb --build $1-$2
-mv $1-$2.deb $1-$2_trusty-amd64-dev.deb
+mv $1-$2.deb $1-$2_${TRAVIS_OS_NAME}.deb
 cd $current_dir
 }
 
@@ -99,4 +99,4 @@ make -j 5  | grep -v "Building CXX"
 # Normally this is what we put at FreeCAD but in our cases Visualization is off so we
 # are not dependant of all these lib
 # create_deb OCCT 7.0 "tcl8.5-dev,tk8.5-dev,libcoin80-dev,libglu1-mesa-dev,g++,cmake"
-create_deb OCCT 7.0 ""
+create_deb OCCT 7.1.0 ""
