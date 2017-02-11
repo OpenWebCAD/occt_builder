@@ -25,6 +25,7 @@ do
 if [ "$is_done" == "" ]
 then
 # The file must be integrated into the new deb
+    echo "Adding $file to the archive"
     cp --parents $file /tmp/$1-$2
     echo $file >> /tmp/stage
 fi    
