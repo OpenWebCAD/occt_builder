@@ -1,4 +1,5 @@
 dist: trusty
+sudo: required
 language: cpp
 cache: ccache
 os:
@@ -13,7 +14,7 @@ addons:
     - cmake
     - ccache
 install:
-- bash build_occt.sh
+- make prebuild
 script:
 - make package
 deploy:
