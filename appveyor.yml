@@ -15,5 +15,17 @@ test_script:
   - echo This is my custom test script
 test: off
 build: off  
-deploy: off
+deploy: 
+  # release: myproduct-v$(appveyor_build_version)
+  # description: 'Release description'
+  provider: GitHub
+  auth_token:
+    secure: ByhARJzBLendy3Ys8MK+xbPv+aP39Pixz5OhDsw1ztdNUsRXmvGtPpcS697hIMlI # my encrypted token from GitHub
+  artifact: $(FULL_ARCHIVE)
+  draft:      true
+  prerelease: true
+  on:
+    branch: master                 # release from master branch only
+    appveyor_repo_tag: true        # deploy on tag push only
 
+# https://www.appveyor.com/docs/deployment/github/
