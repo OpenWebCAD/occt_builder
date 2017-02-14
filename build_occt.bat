@@ -3,11 +3,14 @@ ECHO ON
 SET OCCT_VER=occt-7.1.0
 SET PLATFORM=win64
 SET ROOTFOLDER=%~dp0
-SET ARCHIVE_FOLDER=%ROOTFOLDER%\dist\%PLATFORM%
+SET ARCHIVE_FOLDER=%ROOTFOLDER%dist\%PLATFORM%
 SET DISTFOLDER=%ARCHIVE_FOLDER%\%OCCT_VER%
 SET ARCHIVE=%OCCT_VER%-%PLATFORM%.zip"
 SET FULL_ARCHIVE=%ARCHIVE_FOLDER%\%ARCHIVE%
 
+
+ECHO skip downloading if %OCCT_VER% folder exists
+if exist %OCCT_VER% goto generate_solution
 ECHO OFF
 ECHO 
 ECHO -----------------------------------------------------------------
@@ -27,6 +30,7 @@ CD %OCCT_VER%
 CALL patch -p1 < ../add_cotire_to_7.1.0.patch
 CD ..
 
+:generate_solution
 
 MKDIR %DISTFOLDER%
 
@@ -61,7 +65,7 @@ SET VERBOSITY=quiet
 REM SET VERBOSITY=minimal
 
 REM msbuild /m oce.sln
-CALL msbuild /m occt.sln /verbosity:%VERBOSITY% /consoleloggerparameters:Summary;ShowTimestamp
+CALL msbuild /m occt.sln /p:Configuration=Debug /p:Platform="Any CPU" /verbosity:%VERBOSITY% /consoleloggerparameters:Summary;ShowTimestamp
 ECHO ERROR LEVEL = %ERRORLEVEL%
 if NOT '%ERRORLEVEL%'=='0' goto handle_msbuild_error
 
