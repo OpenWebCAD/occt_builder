@@ -1,4 +1,4 @@
-
+ECHO ON
 
 SET OCCT_VER=occt-7.1.0
 SET PLATFORM=win64
@@ -8,18 +8,21 @@ SET DISTFOLDER=%ARCHIVE_FOLDER%\%OCCT_VER%
 SET ARCHIVE=%OCCT_VER%-%PLATFORM%.zip"
 SET FULL_ARCHIVE=%ARCHIVE_FOLDER%\%ARCHIVE%
 
-
+ECHO OFF
 ECHO 
 ECHO -----------------------------------------------------------------
 ECHO        DOWNLOADING OFFICIAL OCCT 7.1.0 SOURCE
 ECHO -----------------------------------------------------------------
+ECHO ON
 CALL curl  -L -o %OCCT_VER%.tgz "http://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=89aebdea8d6f4d15cfc50e9458cd8e2e25022326;sf=tgz"
 CALL tar -xf %OCCT_VER%.tgz
 CALL mv occt-89aebde %OCCT_VER%
 
+ECHO OFF
 ECHO -----------------------------------------------------------------
 ECHO          PATCHING 7.1.0 TO SPEEDUP BUILD
 ECHO -----------------------------------------------------------------
+ECHO ON
 CD %OCCT_VER%
 CALL patch -p1 < ../add_cotire_to_7.1.0.patch
 CD ..
@@ -27,9 +30,11 @@ CD ..
 
 MKDIR %DISTFOLDER%
 
+ECHO OFF
 ECHO -----------------------------------------------------------------
 ECHO       GENERATING SOLUTION
 ECHO -----------------------------------------------------------------
+ECHO ON
 CALL mkdir build
 CALL cd build
 CALL cmake -INSTALL_DIR:STRING="%DISTFOLDER%" ^
@@ -47,37 +52,46 @@ CALL cmake -INSTALL_DIR:STRING="%DISTFOLDER%" ^
           -DBUILD_MODULE_Visualization:BOOLEAN=OFF ^
           ../%OCCT_VER%
 
+ECHO OFF
 ECHO -----------------------------------------------------------------
 ECHO       BUILDING SOLUTION
 ECHO -----------------------------------------------------------------
+ECHO ON
 SET VERBOSITY=quiet
 REM SET VERBOSITY=minimal
 
 REM msbuild /m oce.sln
 CALL msbuild /m occt.sln /p:Configuration=Release /verbosity:%VERBOSITY% /consoleloggerparameters:Summary;ShowTimestamp
 ECHO ERROR LEVEL = %ERRORLEVEL%
-f NOT '%ERRORLEVEL%'=='0' goto handle_msbuild_error
+if NOT '%ERRORLEVEL%'=='0' goto handle_msbuild_error
 
+ECHO OFF
 ECHO -----------------------------------------------------------------
 ECHO       BUILDING SOLUTION   -> DONE !
 ECHO -----------------------------------------------------------------
+ECHO ON
 
 
+ECHO OFF
 ECHO -----------------------------------------------------------------
 ECHO       INSTALING TO  %DISTFOLDER%
 ECHO -----------------------------------------------------------------
+ECHO ON
 CALL msbuild /m INSTALL.vcxproj /p:Configuration=Release /verbosity:%VERBOSITY% /consoleloggerparameters:Summary;ShowTimestamp
 ECHO ERROR LEVEL = %ERRORLEVEL%
-f NOT '%ERRORLEVEL%'=='0' goto handle_install_error
+if NOT '%ERRORLEVEL%'=='0' goto handle_install_error
 
+ECHO OFF
 ECHO -----------------------------------------------------------------
 ECHO       CREATING ARCHIVE %DISTFOLDER%
 ECHO -----------------------------------------------------------------
+ECHO ON
 CD %ARCHIVE_FOLDER%
 7z a %ARCHIVE% %OCCT_VER%\
 CD %ROOTFOLDER%
 DIR %FULL_ARCHIVE%
 
+ECHO OFF
 ECHO -----------------------------------------------------------------
 ECHO      DONE
 ECHO -----------------------------------------------------------------
