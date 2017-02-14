@@ -7,6 +7,7 @@ clone_depth: 5
 
 install:
   - cmd: build_occt.bat
+  - cmd: ECHO %FULL_ARCHIVE%  
 
 build_script:
   -  echo This is my custom build script
@@ -14,8 +15,7 @@ build_script:
 test_script:
   - echo This is my custom test script
 test: off
-build: 
-  - ECHO %FULL_ARCHIVE%  
+build: off
 deploy: 
   # release: myproduct-v$(appveyor_build_version)
   # description: 'Release description'
