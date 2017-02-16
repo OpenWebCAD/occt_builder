@@ -8,9 +8,19 @@ SET DISTFOLDER=%ARCHIVE_FOLDER%\%OCCT_VER%
 SET ARCHIVE=%OCCT_VER%-%PLATFORM%.zip"
 SET FULL_ARCHIVE=%ARCHIVE_FOLDER%\%ARCHIVE%
 
+ECHO ---------------------------------------------------------------------------
+ECHO  Compiling with Visual Studio 2015 - X64
+ECHO ---------------------------------------------------------------------------
+SET VSVER=2015
+REM CALL "%~dp0"/SETENV.BAT  64
+set GENERATOR=Visual Studio 14 2015 Win64
+set VisualStudioVersion=14.0
+CALL "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" amd64
+
+
 
 ECHO skip downloading if %OCCT_VER% folder exists
-if exist %OCCT_VER% goto generate_solution
+if exist %OCCT_VER% ( goto generate_solution )
 ECHO OFF
 ECHO 
 ECHO -----------------------------------------------------------------
@@ -28,7 +38,7 @@ ECHO -----------------------------------------------------------------
 ECHO ON
 CD %OCCT_VER%
 CALL patch -p1 < ../add_cotire_to_7.1.0.patch
-CD ..
+CD %ROOTFOLDER%
 
 :generate_solution
 
@@ -42,7 +52,7 @@ ECHO ON
 CALL mkdir build
 CALL cd build
 CALL cmake -INSTALL_DIR:STRING="%DISTFOLDER%" ^
-          -DCMAKE_SUPPRESS_REGENERATION:BOOL=ON  ^
+          -DCMAKE_SUPPRESS_REGENERATION:BOOL=OFF  ^
           -DBUILD_SHARED_LIBS:BOOL=OFF ^
           -DBUILD_TESTING:BOOLEAN=OFF ^
           -DBUILD_MODULE_ApplicationFramework:BOOLEAN=OFF ^
@@ -54,6 +64,7 @@ CALL cmake -INSTALL_DIR:STRING="%DISTFOLDER%" ^
           -DBUILD_MODULE_ModelingAlgorithms:BOOLEAN=ON ^
           -DBUILD_MODULE_ModelingData:BOOLEAN=ON ^
           -DBUILD_MODULE_Visualization:BOOLEAN=OFF ^
+          -G "%GENERATOR%" ^
           ../%OCCT_VER%
 
 ECHO OFF
@@ -65,7 +76,7 @@ SET VERBOSITY=quiet
 REM SET VERBOSITY=minimal
 
 REM msbuild /m oce.sln
-CALL msbuild /m occt.sln /p:Configuration=Debug /p:Platform="Any CPU" /verbosity:%VERBOSITY% /consoleloggerparameters:Summary;ShowTimestamp
+CALL msbuild /m occt.sln /p:Configuration=Debug /p:Platform="Win64" /verbosity:%VERBOSITY% /consoleloggerparameters:Summary;ShowTimestamp
 ECHO ERROR LEVEL = %ERRORLEVEL%
 if NOT '%ERRORLEVEL%'=='0' goto handle_msbuild_error
 
