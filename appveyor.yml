@@ -18,7 +18,7 @@ test: off
 build: off
 
 artifacts:
-  path: $(FULL_ARCHIVE)
+  path: '**/*.zip'
   name: OCCT
 
 deploy: 
@@ -27,7 +27,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: ByhARJzBLendy3Ys8MK+xbPv+aP39Pixz5OhDsw1ztdNUsRXmvGtPpcS697hIMlI # my encrypted token from GitHub
-  artifact: $(FULL_ARCHIVE)
+  artifact: '**/*.zip'
   draft:      true
   prerelease: true
   force_update: true
