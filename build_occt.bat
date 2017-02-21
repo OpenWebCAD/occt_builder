@@ -102,7 +102,7 @@ ECHO       CREATING ARCHIVE %DISTFOLDER%
 ECHO -----------------------------------------------------------------
 ECHO ON
 CD %ARCHIVE_FOLDER%
-7z a %ARCHIVE% %OCCT_VER%\
+7z a %ARCHIVE% %OCCT_VER%
 CD %ROOTFOLDER%
 DIR %FULL_ARCHIVE%
 
