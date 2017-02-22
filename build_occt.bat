@@ -51,8 +51,9 @@ ECHO -----------------------------------------------------------------
 ECHO ON
 CALL mkdir build
 CALL cd build
-CALL cmake -INSTALL_DIR:STRING="%DISTFOLDER%" ^
-          -DCMAKE_SUPPRESS_REGENERATION:BOOL=OFF  ^
+CALL cmake -DINSTALL_DIR:STRING="%DISTFOLDER%" ^
+          -DCMAKE_INSTALL_PREFIX:STRING="%DISTFOLDER%" ^
+          -DCMAKE_SUPPRESS_REGENERATION:BOOL=ON  ^
           -DBUILD_SHARED_LIBS:BOOL=OFF ^
           -DBUILD_TESTING:BOOLEAN=OFF ^
           -DBUILD_MODULE_ApplicationFramework:BOOLEAN=OFF ^
