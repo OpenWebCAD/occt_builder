@@ -72,5 +72,6 @@ cmake -DINSTALL_DIR:STRING="../dist/occt-7.1.0" \
           ../occt-7.1.0
 
 make -j 5  | grep -v "Building CXX"
+make install
 #create_deb OCCT 7.0 "tcl8.5-dev,tk8.5-dev,libcoin80-dev,libglu1-mesa-dev,g++,cmake"
 create_deb OCCT 7.0 ""
