@@ -11,25 +11,26 @@ echo "Depends:"$3 >> /tmp/$1-$2/DEBIAN/control
 echo "Maintainer:verdun@splitted-desktop.com" >> /tmp/$1-$2/DEBIAN/control
 echo "Homepage:http://ruggedpod.qyshare.com" >> /tmp/$1-$2/DEBIAN/control
 echo "Description:TEST PACKAGE" >> /tmp/$1-$2/DEBIAN/control
-file_list=`ls -ltd $(find ../dist/occt-7.1.0) | awk '{ print $9}'`
-for file in $file_list 
-do
-  new_file=`printf "%q" "$file"`
-  new_file=`echo $new_file | sed 's/\+/\\\\+/g'`
-  is_done=`cat /tmp/stage | grep -E "$new_file"`
-if [ "$is_done" == "" ]
-then
+# file_list=`ls -ltd $(find ../dist/occt-7.1.0) | awk '{ print $9}'`
+# for file in $file_list 
+#do
+#  new_file=`printf "%q" "$file"`
+#  new_file=`echo $new_file | sed 's/\+/\\\\+/g'`
+#  is_done=`cat /tmp/stage | grep -E "$new_file"`
+#if [ "$is_done" == "" ]
+#then
 # The file must be integrated into the new deb
-    cp --parents $file /tmp/$1-$2
-    echo $file >> /tmp/stage
-fi    
-done
+#    cp --parents $file /tmp/$1-$2
+#    echo $file >> /tmp/stage
+#fi    
+#done
 current_dir=`pwd`
 # relocate the deb package into /usr instead of ../dist/occt-7.1.0
 cd ../dist/occt-7.1.0
 content=`ls`
 output_dir=`pwd`
-mv ../dist/occt-7.1.0/* /tmp/$1-$2/usr
+mkdir /tmp/$1-$2/usr
+mv * /tmp/$1-$2/usr
 cd /tmp
 dpkg-deb --build $1-$2
 mv $1-$2.deb $1-$2_trusty-amd64.deb
