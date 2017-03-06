@@ -33,8 +33,8 @@ mkdir /tmp/$1-$2/usr
 mv * /tmp/$1-$2/usr
 cd /tmp
 dpkg-deb --build $1-$2
-mv $1-$2.deb $1-$2_trusty-amd64.deb
-ls -lta $1-$2_trusty-amd64.deb
+mv $1-$2.deb $1-$2-${TRAVIS_OS_NAME}.deb
+ls -lta $1-$2-${TRAVIS_OS_NAME}.deb
 cd $current_dir
 }
 
@@ -75,4 +75,4 @@ cmake -DINSTALL_DIR:STRING="../dist/occt-7.1.0" \
 make -j 5  | grep -v "Building CXX"
 make install
 #create_deb OCCT 7.0 "tcl8.5-dev,tk8.5-dev,libcoin80-dev,libglu1-mesa-dev,g++,cmake"
-create_deb OCCT 7.0 ""
+create_deb occt 7.1.0 ""
