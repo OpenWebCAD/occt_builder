@@ -17,8 +17,6 @@ set GENERATOR=Visual Studio 15 2017 Win64
 set VisualStudioVersion=15.0
 CALL "%VS150COMNTOOLS%\..\..\VC\vcvarsall.bat" amd64
 
-SET PATH="c:\Program Files\Git\mingw64\bin";%PATH%
-
 ECHO skip downloading if %OCCT_VER% folder exists
 if exist %OCCT_VER% ( goto generate_solution )
 ECHO OFF
@@ -35,11 +33,11 @@ CALL mv occt-8662560 %OCCT_VER%
 
 ECHO OFF
 ECHO -----------------------------------------------------------------
-ECHO          PATCHING 7.1.0 TO SPEEDUP BUILD
+ECHO          PATCHING %OCCT_VER% TO SPEEDUP BUILD
 ECHO -----------------------------------------------------------------
 ECHO ON
 CD %OCCT_VER%
-REM CALL patch -p1 < ../add_cotire_to_7.2.0.patch
+CALL patch -p1 < ../add_cotire_to_7.2.0.patch
 CD %ROOTFOLDER%
 
 :generate_solution
