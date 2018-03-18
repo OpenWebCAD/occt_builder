@@ -1,6 +1,6 @@
 ECHO ON
 
-SET OCCT_VER=occt-7.1.0
+SET OCCT_VER=occt-7.2.0
 SET PLATFORM=win64
 SET ROOTFOLDER=%~dp0
 SET ARCHIVE_FOLDER=%ROOTFOLDER%dist\%PLATFORM%
@@ -9,27 +9,29 @@ SET ARCHIVE=%OCCT_VER%-%PLATFORM%.zip
 SET FULL_ARCHIVE=%ARCHIVE_FOLDER%\%ARCHIVE%
 
 ECHO ---------------------------------------------------------------------------
-ECHO  Compiling with Visual Studio 2015 - X64
+ECHO  Compiling with Visual Studio 2017 - X64
 ECHO ---------------------------------------------------------------------------
-SET VSVER=2015
+SET VSVER=2017
 REM CALL "%~dp0"/SETENV.BAT  64
-set GENERATOR=Visual Studio 14 2015 Win64
-set VisualStudioVersion=14.0
-CALL "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" amd64
+set GENERATOR=Visual Studio 15 2017 Win64
+set VisualStudioVersion=15.0
+CALL "%VS150COMNTOOLS%\..\..\VC\vcvarsall.bat" amd64
 
-
+SET PATH="c:\Program Files\Git\mingw64\bin";%PATH%
 
 ECHO skip downloading if %OCCT_VER% folder exists
 if exist %OCCT_VER% ( goto generate_solution )
 ECHO OFF
 ECHO 
 ECHO -----------------------------------------------------------------
-ECHO        DOWNLOADING OFFICIAL OCCT 7.1.0 SOURCE
+ECHO        DOWNLOADING OFFICIAL OCCT  %OCCT_VER% SOURCE
 ECHO -----------------------------------------------------------------
 ECHO ON
-CALL curl  -L -o %OCCT_VER%.tgz "http://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=89aebdea8d6f4d15cfc50e9458cd8e2e25022326;sf=tgz"
+SET SNAPSHOT="http://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=8662560e2c9c83de9ed97b522bebcad2cfc87b92;sf=tgz"
+CALL curl  -L -o %OCCT_VER%.tgz %SNAPSHOT%
 CALL tar -xf %OCCT_VER%.tgz
-CALL mv occt-89aebde %OCCT_VER%
+CALL mv occt-8662560 %OCCT_VER%
+
 
 ECHO OFF
 ECHO -----------------------------------------------------------------
@@ -37,7 +39,7 @@ ECHO          PATCHING 7.1.0 TO SPEEDUP BUILD
 ECHO -----------------------------------------------------------------
 ECHO ON
 CD %OCCT_VER%
-CALL patch -p1 < ../add_cotire_to_7.1.0.patch
+REM CALL patch -p1 < ../add_cotire_to_7.2.0.patch
 CD %ROOTFOLDER%
 
 :generate_solution
@@ -51,9 +53,16 @@ ECHO -----------------------------------------------------------------
 ECHO ON
 CALL mkdir build
 CALL cd build
+ECHO "DISTFOLDER = "%DISTFOLDER%
+
 CALL cmake -INSTALL_DIR:STRING="%DISTFOLDER%" ^
-          -DCMAKE_SUPPRESS_REGENERATION:BOOL=OFF  ^
-          -DBUILD_SHARED_LIBS:BOOL=OFF ^
+          -DCMAKE_INSTALL_PREFIX="%DISTFOLDER%" ^
+          -DCMAKE_SUPPRESS_REGENERATION:BOOLEAN=OFF  ^
+          -DUSE_TCL:BOOLEAN=OFF ^
+          -DUSE_FREETYPE:BOOLEAN=OFF ^
+          -DUSE_VTK:BOOLEAN=OFF ^
+          -DBUILD_USE_PCH:BOOLEAN=ON ^
+          -DBUILD_SHARED_LIBS:BOOLEAN=OFF ^
           -DBUILD_TESTING:BOOLEAN=OFF ^
           -DBUILD_MODULE_ApplicationFramework:BOOLEAN=OFF ^
           -DBUILD_MODULE_DataExchange:BOOLEAN=ON ^
@@ -76,7 +85,13 @@ SET VERBOSITY=quiet
 REM SET VERBOSITY=minimal
 
 REM msbuild /m oce.sln
-CALL msbuild /m occt.sln /p:Configuration=Debug /verbosity:%VERBOSITY% /consoleloggerparameters:Summary;ShowTimestamp
+CALL msbuild /m occt.sln /p:Configuration=Debug /p:Platform="x64" /verbosity:%VERBOSITY% ^
+     /consoleloggerparameters:Summary;ShowTimestamp
+ECHO ERROR LEVEL = %ERRORLEVEL%
+if NOT '%ERRORLEVEL%'=='0' goto handle_msbuild_error
+
+CALL msbuild /m occt.sln /p:Configuration=Release /p:Platform="x64" /verbosity:%VERBOSITY% ^
+     /consoleloggerparameters:Summary;ShowTimestamp
 ECHO ERROR LEVEL = %ERRORLEVEL%
 if NOT '%ERRORLEVEL%'=='0' goto handle_msbuild_error
 
@@ -92,7 +107,9 @@ ECHO -----------------------------------------------------------------
 ECHO       INSTALING TO  %DISTFOLDER%
 ECHO -----------------------------------------------------------------
 ECHO ON
-CALL msbuild /m INSTALL.vcxproj /p:Configuration=Release /verbosity:%VERBOSITY% /consoleloggerparameters:Summary;ShowTimestamp
+CALL msbuild /m INSTALL.vcxproj /p:Configuration=Release  /p:Platform="x64" /verbosity:%VERBOSITY% ^
+     /consoleloggerparameters:Summary;ShowTimestamp
+
 ECHO ERROR LEVEL = %ERRORLEVEL%
 if NOT '%ERRORLEVEL%'=='0' goto handle_install_error
 

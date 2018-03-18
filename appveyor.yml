@@ -1,7 +1,7 @@
 init:
   - git config --global core.autocrlf input
 
-version: '7.1.{build}'
+version: '7.2.{build}'
 
 clone_depth: 5
 

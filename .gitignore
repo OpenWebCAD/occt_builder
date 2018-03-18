@@ -1,4 +1,4 @@
 build/
-occt-7.1.0*
-occt7.1.0*
+occt-7*
+occt7.*
 dist/
