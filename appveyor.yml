@@ -27,7 +27,7 @@ deploy:
   # description: 'Release description'
   provider: GitHub
   auth_token:
-    secure: ByhARJzBLendy3Ys8MK+xbPv+aP39Pixz5OhDsw1ztdNUsRXmvGtPpcS697hIMlI # my encrypted token from GitHub
+    secure: pEyC6k67/FGhaa9ePlUbbeIKi2H4XlrtCoaLrv03Z9OonEiXz4vH0/3ULzdB/qQB
   artifact: OCCT
   draft:      true
   prerelease: true
