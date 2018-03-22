@@ -12,13 +12,16 @@ then
   cd ..
 fi
 
+export INSTALL_DIR=`pwd`/dist/occt-7.2.0
+
 mkdir -p build_linux
 cd build_linux
 export CCACHE_SLOPPINESS="pch_defines;time_macros"
 
-cmake -DINSTALL_DIR:STRING="../dist/occt-7.2.0" \
+cmake -DINSTALL_DIR:STRING="${INSTALL_DIR}" \
           -DCMAKE_SUPPRESS_REGENERATION:BOOL=ON  \
           -DBUILD_USE_PCH:BOOLEAN=ON \
+          -DUSE_TBB:BOOLEAN=ON \
           -DBUILD_SHARED_LIBS:BOOL=OFF \
           -DBUILD_TESTING:BOOLEAN=OFF \
           -DBUILD_MODULE_ApplicationFramework:BOOLEAN=OFF \
