@@ -13,6 +13,10 @@ addons:
     - cmake
     - ccache
     - libtbb-dev
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update          ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install tbb; fi
+
 install:
 - bash build_occt.sh
 script:
