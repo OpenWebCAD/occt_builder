@@ -12,6 +12,7 @@ addons:
     - g++-5
     - cmake
     - ccache
+    - libtbb-dev
 install:
 - bash build_occt.sh
 script:
