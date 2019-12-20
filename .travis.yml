@@ -12,6 +12,7 @@ addons:
     - g++
     - cmake
     - libtbb-dev
+    - mesa-common-dev
     #   - ccache
 install:
 - bash build_occt.sh
