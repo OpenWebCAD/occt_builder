@@ -1,0 +1,82 @@
+diff -ur occt-fd47711/adm/MODULES occt-7.4.0_modified/adm/MODULES
+--- occt-fd47711/adm/MODULES	2019-09-29 11:12:58.000000000 +0200
++++ occt-7.4.0_modified/adm/MODULES	2019-12-20 13:20:41.810477040 +0100
+@@ -1,7 +1,7 @@
+ FoundationClasses TKernel TKMath
+ ModelingData TKG2d TKG3d TKGeomBase TKBRep
+-ModelingAlgorithms TKGeomAlgo TKTopAlgo TKPrim TKBO TKBool TKHLR TKFillet TKOffset TKFeat TKMesh TKXMesh TKShHealing
+-Visualization TKService TKV3d TKOpenGl TKMeshVS TKIVtk TKD3DHost
++ModelingAlgorithms TKGeomAlgo TKTopAlgo TKPrim TKBO TKBool TKHLR TKFillet TKOffset TKFeat TKMesh TKShHealing
++Visualization TKV3d TKOpenGl TKMeshVS TKIVtk TKD3DHost
+ ApplicationFramework TKCDF TKLCAF TKCAF TKBinL TKXmlL TKBin TKXml TKStdL TKStd TKTObj TKBinTObj TKXmlTObj TKVCAF
+-DataExchange TKXSBase TKSTEPBase TKSTEPAttr TKSTEP209 TKSTEP TKIGES TKXCAF TKXDEIGES TKXDESTEP TKSTL TKVRML TKXmlXCAF TKBinXCAF TKRWMesh
++DataExchange TKXSBase TKService TKXCAF TKSTEPBase TKSTEPAttr TKSTEP209 TKSTEP TKIGES TKSTL TKVRML TKRWMesh
+ Draw TKDraw TKTopTest TKViewerTest TKXSDRAW TKDCAF TKXDEDRAW TKTObjDRAW TKQADraw TKIVtkDraw DRAWEXE
+Les fichiers binaires occt-fd47711/dox/user_guides/foundation_classes/images/foundation_classes_image007.png et occt-7.4.0_modified/dox/user_guides/foundation_classes/images/foundation_classes_image007.png sont différents
+diff -ur occt-fd47711/src/Aspect/Aspect_DisplayConnection.cxx occt-7.4.0_modified/src/Aspect/Aspect_DisplayConnection.cxx
+--- occt-fd47711/src/Aspect/Aspect_DisplayConnection.cxx	2019-09-29 11:12:58.000000000 +0200
++++ occt-7.4.0_modified/src/Aspect/Aspect_DisplayConnection.cxx	2019-12-20 13:07:45.585064846 +0100
+@@ -25,7 +25,8 @@
+ // =======================================================================
+ Aspect_DisplayConnection::Aspect_DisplayConnection()
+ {
+-#if !defined(_WIN32) && (!defined(__APPLE__) || defined(MACOSX_USE_GLX)) && !defined(__ANDROID__) && !defined(__QNX__)
++#if defined(USE_GRAPHICS)
++//#if !defined(_WIN32) && (!defined(__APPLE__) || defined(MACOSX_USE_GLX)) && !defined(__ANDROID__) && !defined(__QNX__)
+   myDisplay = NULL;
+   myIsOwnDisplay = false;
+   OSD_Environment anEnv ("DISPLAY");
+@@ -40,7 +41,8 @@
+ // =======================================================================
+ Aspect_DisplayConnection::~Aspect_DisplayConnection()
+ {
+-#if !defined(_WIN32) && (!defined(__APPLE__) || defined(MACOSX_USE_GLX)) && !defined(__ANDROID__) && !defined(__QNX__)
++#if defined(USE_GRAPHICS)
++//#if !defined(_WIN32) && (!defined(__APPLE__) || defined(MACOSX_USE_GLX)) && !defined(__ANDROID__) && !defined(__QNX__)
+   if (myDisplay != NULL
+    && myIsOwnDisplay)
+   {
+@@ -49,7 +51,7 @@
+ #endif
+ }
+ 
+-#if !defined(_WIN32) && (!defined(__APPLE__) || defined(MACOSX_USE_GLX)) && !defined(__ANDROID__) && !defined(__QNX__)
++#if defined(USE_GRAPHICS)
+ // =======================================================================
+ // function : Aspect_DisplayConnection
+ // purpose  :
+diff -ur occt-fd47711/src/Aspect/Aspect_DisplayConnection.hxx occt-7.4.0_modified/src/Aspect/Aspect_DisplayConnection.hxx
+--- occt-fd47711/src/Aspect/Aspect_DisplayConnection.hxx	2019-09-29 11:12:58.000000000 +0200
++++ occt-7.4.0_modified/src/Aspect/Aspect_DisplayConnection.hxx	2019-12-20 13:06:36.927947393 +0100
+@@ -20,7 +20,8 @@
+ #include <TCollection_AsciiString.hxx>
+ #include <NCollection_DataMap.hxx>
+ 
+-#if !defined(_WIN32) && (!defined(__APPLE__) || defined(MACOSX_USE_GLX)) && !defined(__ANDROID__) && !defined(__QNX__)
++// #define USE_GRAPHICS FALSE
++#if defined(USE_GRAPHICS)
+   #include <InterfaceGraphic.hxx>
+ #endif
+ 
+@@ -39,7 +40,7 @@
+   //! Destructor. Close opened connection.
+   Standard_EXPORT ~Aspect_DisplayConnection();
+ 
+-#if !defined(_WIN32) && (!defined(__APPLE__) || defined(MACOSX_USE_GLX)) && !defined(__ANDROID__) && !defined(__QNX__)
++#if defined(USE_GRAPHICS)
+   //! Constructor. Creates connection with display specified in theDisplayName.
+   //! Display name should be in format "hostname:number" or "hostname:number.screen_number", where:
+   //! hostname      - Specifies the name of the host machine on which the display is physically attached.
+diff -ur occt-fd47711/src/TKService/PACKAGES occt-7.4.0_modified/src/TKService/PACKAGES
+--- occt-fd47711/src/TKService/PACKAGES	2019-09-29 11:12:58.000000000 +0200
++++ occt-7.4.0_modified/src/TKService/PACKAGES	2019-12-20 13:40:05.940134362 +0100
+@@ -1,9 +1,7 @@
+ Aspect
+ InterfaceGraphic
+-Xw
+ Image
+ Media
+ WNT
+ Cocoa
+ TColQuantity
+-Font

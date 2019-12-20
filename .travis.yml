@@ -21,7 +21,7 @@ deploy:
   provider: releases
   api_key:
     secure: oMjULOCmhN8PoB6ES7LgRpfIXHW5JNaWun/6+zowLCoZEjtXgXqVJfqxtSSRCIo5Mj0f+UKx1mLfRe4T93KpcFCelP5aUy6KnLl1d6CJsRq4EESWEQFwm/QfG9nyGKHpZatARlT3k/hsZFB6G4Bi58/E4lcrv0DFSQe7QVNM00Vylr2HKpsPRwgdJcbjcWDax0htXwF6GXUp5nJbGNwaG/ZGZldgMGPnprbPTKX64MxYzllldxZ6EU8D70O3+CnQsMG6zUwrcB6FplDaqwRSKd2toJLohKztBoK6eA6Eq+8Wwzd4W1xAwZ6Rt/14ks+kNm1U8Eshe9YgqnQdTz8W90s1BgdDzkssOzVqu9lRQWGO+HTMVDajBx2t4X/xdtilNPf51ynUVV5i6MBEA9ESpLY6BTdFvV4Z9dRc8eUPBszTi4AHOni8VVEG3c75i67s7W2LHghrGsiOcJPOgoGj1OkQgiN4cdIE3QeL7ZtOnpz/mVFO6TcfbgZT3YKBcEbkxJu0LA1C6dJZdVdpGD8fxgx9bghYMnp+lBCb/E4jtP/UYFPWLlNh09jamzF08rZjA6bLHIPOCzlp19rfDcodLyK9+iLzBmvfXgYD0slNZat6bje4PweEq7BdQflO0xbUi+Cvz/fIi5BvITJqI5huuAy+LFdv3Ld5x46zod2ha/M=
-  file: dist/occt-7.2.0-${TRAVIS_OS_NAME}.tgz
+  file: dist/occt-7.4.0-${TRAVIS_OS_NAME}.tgz
   skip_cleanup: true
   overwrite: true
   on:
