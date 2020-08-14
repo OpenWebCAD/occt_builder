@@ -17,7 +17,6 @@ addons:
     - libgl1-mesa-dev
     - libxmu-dev
     - libfreetype6-dev
-    - libopengl-dev
   homebrew:
     packages:
     - tbb
