@@ -1,6 +1,6 @@
-diff -ur occt-fd47711/adm/MODULES occt-7.4.0_modified/adm/MODULES
+diff -uraN occt-fd47711/adm/MODULES occt-7.4.0/adm/MODULES
 --- occt-fd47711/adm/MODULES	2019-09-29 11:12:58.000000000 +0200
-+++ occt-7.4.0_modified/adm/MODULES	2019-12-20 13:20:41.810477040 +0100
++++ occt-7.4.0/adm/MODULES	2020-08-14 23:26:04.951103900 +0200
 @@ -1,7 +1,7 @@
  FoundationClasses TKernel TKMath
  ModelingData TKG2d TKG3d TKGeomBase TKBRep
@@ -12,10 +12,9 @@ diff -ur occt-fd47711/adm/MODULES occt-7.4.0_modified/adm/MODULES
 -DataExchange TKXSBase TKSTEPBase TKSTEPAttr TKSTEP209 TKSTEP TKIGES TKXCAF TKXDEIGES TKXDESTEP TKSTL TKVRML TKXmlXCAF TKBinXCAF TKRWMesh
 +DataExchange TKXSBase TKService TKXCAF TKSTEPBase TKSTEPAttr TKSTEP209 TKSTEP TKIGES TKSTL TKVRML TKRWMesh
  Draw TKDraw TKTopTest TKViewerTest TKXSDRAW TKDCAF TKXDEDRAW TKTObjDRAW TKQADraw TKIVtkDraw DRAWEXE
-Les fichiers binaires occt-fd47711/dox/user_guides/foundation_classes/images/foundation_classes_image007.png et occt-7.4.0_modified/dox/user_guides/foundation_classes/images/foundation_classes_image007.png sont différents
-diff -ur occt-fd47711/src/Aspect/Aspect_DisplayConnection.cxx occt-7.4.0_modified/src/Aspect/Aspect_DisplayConnection.cxx
+diff -uraN occt-fd47711/src/Aspect/Aspect_DisplayConnection.cxx occt-7.4.0/src/Aspect/Aspect_DisplayConnection.cxx
 --- occt-fd47711/src/Aspect/Aspect_DisplayConnection.cxx	2019-09-29 11:12:58.000000000 +0200
-+++ occt-7.4.0_modified/src/Aspect/Aspect_DisplayConnection.cxx	2019-12-20 13:07:45.585064846 +0100
++++ occt-7.4.0/src/Aspect/Aspect_DisplayConnection.cxx	2020-08-14 23:26:04.951103900 +0200
 @@ -25,7 +25,8 @@
  // =======================================================================
  Aspect_DisplayConnection::Aspect_DisplayConnection()
@@ -45,9 +44,9 @@ diff -ur occt-fd47711/src/Aspect/Aspect_DisplayConnection.cxx occt-7.4.0_modifie
  // =======================================================================
  // function : Aspect_DisplayConnection
  // purpose  :
-diff -ur occt-fd47711/src/Aspect/Aspect_DisplayConnection.hxx occt-7.4.0_modified/src/Aspect/Aspect_DisplayConnection.hxx
+diff -uraN occt-fd47711/src/Aspect/Aspect_DisplayConnection.hxx occt-7.4.0/src/Aspect/Aspect_DisplayConnection.hxx
 --- occt-fd47711/src/Aspect/Aspect_DisplayConnection.hxx	2019-09-29 11:12:58.000000000 +0200
-+++ occt-7.4.0_modified/src/Aspect/Aspect_DisplayConnection.hxx	2019-12-20 13:06:36.927947393 +0100
++++ occt-7.4.0/src/Aspect/Aspect_DisplayConnection.hxx	2020-08-14 23:26:04.951103900 +0200
 @@ -20,7 +20,8 @@
  #include <TCollection_AsciiString.hxx>
  #include <NCollection_DataMap.hxx>
@@ -67,16 +66,26 @@ diff -ur occt-fd47711/src/Aspect/Aspect_DisplayConnection.hxx occt-7.4.0_modifie
    //! Constructor. Creates connection with display specified in theDisplayName.
    //! Display name should be in format "hostname:number" or "hostname:number.screen_number", where:
    //! hostname      - Specifies the name of the host machine on which the display is physically attached.
-diff -ur occt-fd47711/src/TKService/PACKAGES occt-7.4.0_modified/src/TKService/PACKAGES
+diff -uraN occt-fd47711/src/Aspect/Aspect_VKeySet.hxx occt-7.4.0/src/Aspect/Aspect_VKeySet.hxx
+--- occt-fd47711/src/Aspect/Aspect_VKeySet.hxx	2019-09-29 11:12:58.000000000 +0200
++++ occt-7.4.0/src/Aspect/Aspect_VKeySet.hxx	2020-08-14 23:29:29.601103900 +0200
+@@ -13,6 +13,9 @@
+ 
+ #ifndef _Aspect_VKeySet_HeaderFile
+ #define _Aspect_VKeySet_HeaderFile
++#ifdef Status 
++#undef Status 
++#endif
+ 
+ #include <Aspect_VKey.hxx>
+ 
+diff -uraN occt-fd47711/src/TKService/PACKAGES occt-7.4.0/src/TKService/PACKAGES
 --- occt-fd47711/src/TKService/PACKAGES	2019-09-29 11:12:58.000000000 +0200
-+++ occt-7.4.0_modified/src/TKService/PACKAGES	2019-12-20 13:40:05.940134362 +0100
-@@ -1,9 +1,7 @@
++++ occt-7.4.0/src/TKService/PACKAGES	2020-08-14 23:31:09.221103900 +0200
+@@ -1,6 +1,5 @@
  Aspect
  InterfaceGraphic
 -Xw
  Image
  Media
  WNT
- Cocoa
- TColQuantity
- Font

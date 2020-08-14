@@ -1,18 +1,32 @@
-if [ ! -d occt-7.4.0 ]
+export VERSION=7.4.0
+export HASH=fd47711d682be943f0e0a13d1fb54911b0499c31
+export PATCHFILE="../add_cotire_to_${VERSION}.patch"
+
+echo "version = ${VERSION}"
+echo "HASH    = ${HASH}"
+echo "          ${HASH:0:7}"
+
+if [ ! -d occt-${VERSION} ]
 then 
-  curl  -L -o occt7.4.0.tgz "http://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=fd47711d682be943f0e0a13d1fb54911b0499c31;sf=tgz"
-  tar -xf occt7.4.0.tgz
-  mv occt-fd47711 occt-7.4.0
+  curl  -L -o occt${VERSION}.tgz "http://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=${HASH};sf=tgz"
+  tar -xf occt${VERSION}.tgz
+  mv occt-${HASH:0:7} occt-${VERSION}
 
   echo -----------------------------------------------------------------
-  echo          PATCHING 7.4.0 TO SPEEDUP BUILD
+  echo          PATCHING ${VERSION} TO SPEEDUP BUILD
   echo -----------------------------------------------------------------
-  cd occt-7.4.0
-  patch -p1 < ../add_cotire_to_7.4.0.patch
+  cd occt-${VERSION}
+  if [ -f ${PATCHFILE }]
+  then
+     echo patching source with ${PATCHFILE} 
+     patch -p1 < ${PATCHFILE}
+
+     # note diff -uraN b a > patch_from_a_to_b.patch 
+  fi 
   cd ..
 fi
 
-export INSTALL_DIR=`pwd`/dist/occt-7.4.0
+export INSTALL_DIR=`pwd`/dist/occt-${VERSION}
 
 mkdir -p build_linux
 cd build_linux
@@ -35,7 +49,7 @@ cmake -DINSTALL_DIR:STRING="${INSTALL_DIR}" \
           -DBUILD_MODULE_ModelingAlgorithms:BOOLEAN=ON \
           -DBUILD_MODULE_ModelingData:BOOLEAN=ON \
           -DBUILD_MODULE_Visualization:BOOLEAN=OFF \
-          ../occt-7.4.0
+          ../occt-${VERSION}
 
 make -j 5  | grep -v "Building CXX"
 
