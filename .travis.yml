@@ -4,6 +4,7 @@ language: cpp
 os:
 - linux
 - osx
+
 addons:
   apt:
     sources:
@@ -13,6 +14,10 @@ addons:
     - cmake
     - libtbb-dev
     - mesa-common-dev
+    - libgl1-mesa-dev
+    - libxmu-dev
+    - libfreetype6-dev
+
     #   - ccache
 install:
 - bash build_occt.sh
