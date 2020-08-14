@@ -13,11 +13,15 @@ addons:
     - g++
     - cmake
     - libtbb-dev
-    - mesa-common-dev
+    #- mesa-common-dev
     - libgl1-mesa-dev
     - libxmu-dev
     - libfreetype6-dev
-
+    - libopengl-dev
+  homebrew:
+    packages:
+    - tbb
+    update: true
     #   - ccache
 install:
 - bash build_occt.sh
