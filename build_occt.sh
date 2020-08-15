@@ -16,8 +16,9 @@ then
   echo          PATCHING ${VERSION} TO SPEEDUP BUILD
   echo -----------------------------------------------------------------
   cd occt-${VERSION}
-  if [ -f ${PATCHFILE }]
+  if [ -f ${PATCHFILE} ]
   then
+
      echo patching source with ${PATCHFILE} 
      patch -p1 < ${PATCHFILE}
 
