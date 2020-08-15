@@ -1,11 +1,8 @@
-# dist: trusty
 language: cpp
-# cache: ccache
 os:
 - linux
 - osx
 osx_image: xcode12
-
 addons:
   apt:
     sources:
@@ -14,19 +11,16 @@ addons:
     - g++
     - cmake
     - libtbb-dev
-    #- mesa-common-dev
     - libgl1-mesa-dev
     - libxmu-dev
     - libfreetype6-dev
     - libxi-dev
     - libfontconfig1-dev
-
   homebrew:
     packages:
     - tbb
     - freetype
     update: true
-    #   - ccache
 install:
 - bash build_occt.sh
 script:
@@ -34,10 +28,10 @@ script:
 deploy:
   provider: releases
   api_key:
-    secure: oMjULOCmhN8PoB6ES7LgRpfIXHW5JNaWun/6+zowLCoZEjtXgXqVJfqxtSSRCIo5Mj0f+UKx1mLfRe4T93KpcFCelP5aUy6KnLl1d6CJsRq4EESWEQFwm/QfG9nyGKHpZatARlT3k/hsZFB6G4Bi58/E4lcrv0DFSQe7QVNM00Vylr2HKpsPRwgdJcbjcWDax0htXwF6GXUp5nJbGNwaG/ZGZldgMGPnprbPTKX64MxYzllldxZ6EU8D70O3+CnQsMG6zUwrcB6FplDaqwRSKd2toJLohKztBoK6eA6Eq+8Wwzd4W1xAwZ6Rt/14ks+kNm1U8Eshe9YgqnQdTz8W90s1BgdDzkssOzVqu9lRQWGO+HTMVDajBx2t4X/xdtilNPf51ynUVV5i6MBEA9ESpLY6BTdFvV4Z9dRc8eUPBszTi4AHOni8VVEG3c75i67s7W2LHghrGsiOcJPOgoGj1OkQgiN4cdIE3QeL7ZtOnpz/mVFO6TcfbgZT3YKBcEbkxJu0LA1C6dJZdVdpGD8fxgx9bghYMnp+lBCb/E4jtP/UYFPWLlNh09jamzF08rZjA6bLHIPOCzlp19rfDcodLyK9+iLzBmvfXgYD0slNZat6bje4PweEq7BdQflO0xbUi+Cvz/fIi5BvITJqI5huuAy+LFdv3Ld5x46zod2ha/M=
+    secure: iz2VoU2TB93nPIxdkkyDzqOcljntULyQ7jEXYwrD3pueotf0wbz2cEZBs/Tm0rG7Thy8i6V3MwOVJKjFlHRG7Zw+Cpa0xeUxNqmh/LM/KeKiJgROKE3WLx+i2Y40LoKD2b0ObuTNxSIt6PaflUGXxZ94QscWlGRaHsALieSUiyY3AUroX2wJ417tXoRy1ipQZmzCILJ9cbZrtTlyWovPrBrpTAQgNMivDEeHX9iGwnQUb/AdqRF8352G5dLHrrK5ff5ObWMIUwjApCyJ65PWYaFZXeVJT35dyxZkNxmxcowtBYxPOv1X6xzYyyVZoqao7/CsxPFPNRjESuYnmkJZvtShC9SBUHqQIifYcGN3fcWwnUYuj4eZjYSg8bA4qEpTWgFdbzSp5aJPWwBzXnDhWXIEKH8NF6FGBJ0wbQ4RHPtKhF7tSquxdnKsACzkX6RXe+HTkzgsIpXY2s599lbXd2TXUc1cW8Px0BxHCKiVG9py8fOg3dpqkV/6cgATVe37O2XDY1M5R1drxhElj5IzXpa98YMPwroKfxbqroqP6/sr0T7IUSyMFE+o+Ab0FNUINLTnbMSCdHc1fOu7BHuwJTTG9iFPtrufUW+Fd/RackVZbLU3c6GL5h0OTvje872SCPXLCj/NFf6agaquzAQOSHl4jwTMjbeiphT2AKbLOrg=
   file: dist/occt-*-${TRAVIS_OS_NAME}.tgz
-  skip_cleanup: true
-  overwrite: true
   on:
-    tags: true
     repo: OpenWebCAD/occt_builder
+  skip_cleanup: 'true'
+env:
+  global: 

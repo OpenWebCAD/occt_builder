@@ -18,12 +18,11 @@ then
   cd occt-${VERSION}
   if [ -f ${PATCHFILE} ]
   then
-
      echo patching source with ${PATCHFILE} 
      patch -p1 < ${PATCHFILE}
 
      # note diff -uraN b a > patch_from_a_to_b.patch 
-  fi 
+  end 
   cd ..
 fi
 
