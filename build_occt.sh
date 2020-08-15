@@ -22,7 +22,7 @@ then
      patch -p1 < ${PATCHFILE}
 
      # note diff -uraN b a > patch_from_a_to_b.patch 
-  end 
+  fi 
   cd ..
 fi
 
