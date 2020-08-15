@@ -4,6 +4,7 @@ language: cpp
 os:
 - linux
 - osx
+osx_image: xcode12
 
 addons:
   apt:
@@ -18,7 +19,7 @@ addons:
     - libxmu-dev
     - libfreetype6-dev
     - libxi-dev
-    -  libfontconfig1-dev
+    - libfontconfig1-dev
 
   homebrew:
     packages:
