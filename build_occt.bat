@@ -1,6 +1,14 @@
 ECHO ON
 
-SET OCCT_VER=occt-7.4.0
+SET VERSION=7.6.2
+SET OCCT_VER=occt-%VERSION%
+SET HASH=bb368e271e24f63078129283148ce83db6b9670a
+SET HASHL=bb368e2
+
+if exist %VCINSTALLDIR% ( goto skip_vc_install )
+CALL "C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/VC/Auxiliary/Build/vcvars64.bat"
+
+:skip_vc_install
 
 SET PLATFORM=win64
 SET ROOTFOLDER=%~dp0
@@ -8,15 +16,10 @@ SET ARCHIVE_FOLDER=%ROOTFOLDER%dist\%PLATFORM%
 SET DISTFOLDER=%ARCHIVE_FOLDER%\%OCCT_VER%
 SET ARCHIVE=%OCCT_VER%-%PLATFORM%.zip
 SET FULL_ARCHIVE=%ARCHIVE_FOLDER%\%ARCHIVE%
+SET BUILDFOLDER=build_%OCCT_VER%
+set GENERATOR=Visual Studio 16 2019
 
-ECHO ---------------------------------------------------------------------------
-ECHO  Compiling with Visual Studio 2017 - X64
-ECHO ---------------------------------------------------------------------------
-SET VSVER=2017
-REM CALL "%~dp0"/SETENV.BAT  64
-set GENERATOR=Visual Studio 15 2017 Win64
-set VisualStudioVersion=15.0
-CALL "%VS150COMNTOOLS%\..\..\VC\vcvarsall.bat" amd64
+ECHO OFF
 
 ECHO skip downloading if %OCCT_VER% folder exists
 if exist %OCCT_VER% ( goto generate_solution )
@@ -26,10 +29,12 @@ ECHO -----------------------------------------------------------------
 ECHO        DOWNLOADING OFFICIAL OCCT  %OCCT_VER% SOURCE
 ECHO -----------------------------------------------------------------
 ECHO ON
-SET SNAPSHOT="http://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=8662560e2c9c83de9ed97b522bebcad2cfc87b92;sf=tgz"
-CALL curl  -L -o %OCCT_VER%.tgz %SNAPSHOT%
-CALL tar -xf %OCCT_VER%.tgz
-CALL mv occt-8662560 %OCCT_VER%
+SET SNAPSHOT="http://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=%HASH%;sf=tgz"
+curl  -L -o %OCCT_VER%.tgz %SNAPSHOT%
+tar -xf %OCCT_VER%.tgz
+
+:generate_solution1
+MOVE occt-%HASHL% %OCCT_VER%
 
 
 ECHO OFF
@@ -38,7 +43,9 @@ ECHO          PATCHING %OCCT_VER% TO SPEEDUP BUILD
 ECHO -----------------------------------------------------------------
 ECHO ON
 CD %OCCT_VER%
-CALL patch -p1 < ../add_cotire_to_7.2.0.patch
+
+REM patch -p1 < ../add_cotire_to_%VERSION%.patch
+
 CD %ROOTFOLDER%
 
 :generate_solution
@@ -50,11 +57,11 @@ ECHO -----------------------------------------------------------------
 ECHO       GENERATING SOLUTION
 ECHO -----------------------------------------------------------------
 ECHO ON
-CALL mkdir build
-CALL cd build
+mkdir %BUILDFOLDER%
+cd %BUILDFOLDER%
 ECHO "DISTFOLDER = "%DISTFOLDER%
 
-CALL cmake -INSTALL_DIR:STRING="%DISTFOLDER%" ^
+cmake -DINSTALL_DIR:STRING="%DISTFOLDER%" ^
           -DCMAKE_INSTALL_PREFIX="%DISTFOLDER%" ^
           -DCMAKE_SUPPRESS_REGENERATION:BOOLEAN=OFF  ^
           -DUSE_TCL:BOOLEAN=OFF ^
@@ -72,8 +79,9 @@ CALL cmake -INSTALL_DIR:STRING="%DISTFOLDER%" ^
           -DBUILD_MODULE_ModelingAlgorithms:BOOLEAN=ON ^
           -DBUILD_MODULE_ModelingData:BOOLEAN=ON ^
           -DBUILD_MODULE_Visualization:BOOLEAN=OFF ^
-          -G "%GENERATOR%" ^
           ../%OCCT_VER%
+
+REM           -G "%GENERATOR%" ^
 
 ECHO OFF
 ECHO -----------------------------------------------------------------
@@ -84,12 +92,12 @@ SET VERBOSITY=quiet
 REM SET VERBOSITY=minimal
 
 REM msbuild /m oce.sln
-CALL msbuild /m occt.sln /p:Configuration=Debug /p:Platform="x64" /verbosity:%VERBOSITY% ^
+msbuild /m occt.sln /p:Configuration=Debug /p:Platform="x64" /verbosity:%VERBOSITY% ^
      /consoleloggerparameters:Summary;ShowTimestamp
 ECHO ERROR LEVEL = %ERRORLEVEL%
 if NOT '%ERRORLEVEL%'=='0' goto handle_msbuild_error
 
-CALL msbuild /m occt.sln /p:Configuration=Release /p:Platform="x64" /verbosity:%VERBOSITY% ^
+msbuild /m occt.sln /p:Configuration=Release /p:Platform="x64" /verbosity:%VERBOSITY% ^
      /consoleloggerparameters:Summary;ShowTimestamp
 ECHO ERROR LEVEL = %ERRORLEVEL%
 if NOT '%ERRORLEVEL%'=='0' goto handle_msbuild_error
@@ -106,7 +114,7 @@ ECHO -----------------------------------------------------------------
 ECHO       INSTALING TO  %DISTFOLDER%
 ECHO -----------------------------------------------------------------
 ECHO ON
-CALL msbuild /m INSTALL.vcxproj /p:Configuration=Release  /p:Platform="x64" /verbosity:%VERBOSITY% ^
+msbuild /m INSTALL.vcxproj /p:Configuration=Release  /p:Platform="x64" /verbosity:%VERBOSITY% ^
      /consoleloggerparameters:Summary;ShowTimestamp
 
 ECHO ERROR LEVEL = %ERRORLEVEL%
@@ -114,9 +122,10 @@ if NOT '%ERRORLEVEL%'=='0' goto handle_install_error
 
 ECHO OFF
 ECHO -----------------------------------------------------------------
-ECHO       CREATING ARCHIVE %DISTFOLDER%
+ECHO       CREATING ARCHIVE %DISTFOLDER% %ARCHIVE%
 ECHO -----------------------------------------------------------------
 ECHO ON
+SET PATH=%PATH%;C:\Tools\7-Zip
 CD %ARCHIVE_FOLDER%
 7z a %ARCHIVE% %OCCT_VER%
 CD %ROOTFOLDER%
@@ -133,5 +142,5 @@ exit 0
 
 :handle_install_error
 :handle_msbuild_error
+ECHO exit 1
 exit 1
-

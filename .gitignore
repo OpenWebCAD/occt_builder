@@ -1,5 +1,5 @@
-build/
+build*/
 occt-7*
 occt7.*
-occt*.
+occt.*/
 dist/
