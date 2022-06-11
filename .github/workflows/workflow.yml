@@ -3,11 +3,10 @@ name: CMake Build Matrix
 
 # Controls when the action will run. Triggers the workflow on push
 on: 
-  # push:
   pull_request: 
   release:
-    # tags:
-    # - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -119,17 +118,17 @@ jobs:
           path: dist/win64/occt-*
            
 
-      - name: Create Release 
-        id: create_release
-        if: startsWith(github.event.ref, 'refs/tags/v')
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
+      # - name: Create Release 
+      #   id: create_release
+      #   if: startsWith(github.event.ref, 'refs/tags/v')
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ github.ref }}
+      #     release_name: Release ${{ github.ref }}
+      #     draft: false
+      #     prerelease: false
   
       - name: Upload Release Asset
         id: upload-release-asset 
@@ -139,7 +138,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: |
-             dist/win64/*.tgz
+             dist/**/*.tgz
+             dist/*.tgz
              dist/win64/*.zip
         # with:
         #   upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
