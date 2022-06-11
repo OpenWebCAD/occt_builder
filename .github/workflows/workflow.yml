@@ -104,3 +104,16 @@ jobs:
         run: |
           cmd /k build_occt.bat
  
+      - name: Deploy
+        uses: actions/upload-artifact@v3
+        if: startsWith(matrix.config.name, 'Windows')
+        with: 
+          name: artifact
+          path: dist/occt-*.tgz
+      - name: Deploy
+        uses: actions/upload-artifact@v3
+        if: startsWith(matrix.config.name, 'Ubuntu')
+        with: 
+          name: artifact
+          path: dist/occt-*
+           
