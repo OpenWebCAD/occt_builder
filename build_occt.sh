@@ -1,21 +1,24 @@
-export VERSION=7.4.0
-export HASH=fd47711d682be943f0e0a13d1fb54911b0499c31
+export VERSION=7.6.2
+export OCCT_VER=occt-${VERSION}
+export HASH=bb368e271e24f63078129283148ce83db6b9670a
 export PATCHFILE="../add_cotire_to_${VERSION}.patch"
 
 echo "version = ${VERSION}"
 echo "HASH    = ${HASH}"
 echo "          ${HASH:0:7}"
+echo "OCCT_VER= ${OCCT_VER}"
 
-if [ ! -d occt-${VERSION} ]
+
+if [ ! -d ${OCCT_VER} ]
 then 
   curl  -L -o occt${VERSION}.tgz "http://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=${HASH};sf=tgz"
   tar -xf occt${VERSION}.tgz
-  mv occt-${HASH:0:7} occt-${VERSION}
+  mv occt-${HASH:0:7} ${OCCT_VER}
 
   echo -----------------------------------------------------------------
   echo          PATCHING ${VERSION} TO SPEEDUP BUILD
   echo -----------------------------------------------------------------
-  cd occt-${VERSION}
+  cd ${OCCT_VER}
   if [ -f ${PATCHFILE} ]
   then
      echo patching source with ${PATCHFILE} 
@@ -26,9 +29,12 @@ then
   cd ..
 fi
 
-export INSTALL_DIR=`pwd`/dist/occt-${VERSION}
+export INSTALL_DIR=`pwd`/dist/${OCCT_VER}
 
 mkdir -p build_linux
+
+ls
+
 cd build_linux
 export CCACHE_SLOPPINESS="pch_defines;time_macros"
 
@@ -37,6 +43,9 @@ cmake -DINSTALL_DIR:STRING="${INSTALL_DIR}" \
           -DBUILD_USE_PCH:BOOLEAN=ON \
           -DUSE_TBB:BOOLEAN=ON \
           -DUSE_VTK:BOOLEAN=OFF \
+          -USE_FREETYPE:BOOLEAN=OFF \
+          -USE_XLIB:BOOLEAN=OFF \
+          -USE_OPENGL:BOOLEAN=OFF \
           -DUSE_FREEIMAGE:BOOLEAN=OFF \
           -DBUILD_SHARED_LIBS:BOOL=OFF \
           -DBUILD_TESTING:BOOLEAN=OFF \
@@ -49,7 +58,8 @@ cmake -DINSTALL_DIR:STRING="${INSTALL_DIR}" \
           -DBUILD_MODULE_ModelingAlgorithms:BOOLEAN=ON \
           -DBUILD_MODULE_ModelingData:BOOLEAN=ON \
           -DBUILD_MODULE_Visualization:BOOLEAN=OFF \
-          ../occt-${VERSION}
+          ../${OCCT_VER}
+
 
 make -j 5  | grep -v "Building CXX"
 
