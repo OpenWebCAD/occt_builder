@@ -110,13 +110,15 @@ jobs:
         with: 
           name: artifact
           path: dist/win64/*
-      - name: Deploy
+
+      - name: Deploy (Ubuntu)
         uses: actions/upload-artifact@v3
         if: startsWith(matrix.config.name, 'Ubuntu')
         with: 
           name: artifact
-          path: dist/occt-*
+          path: dist/win64/occt-*
            
+
       - name: Create Release 
         id: create_release
         if: startsWith(github.event.ref, 'refs/tags/v')
@@ -128,7 +130,7 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-
+  
       - name: Upload Release Asset
         id: upload-release-asset 
         if: startsWith(github.event.ref, 'refs/tags/v')
