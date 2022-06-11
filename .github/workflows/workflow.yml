@@ -104,12 +104,12 @@ jobs:
         run: |
           cmd /k build_occt.bat
  
-      - name: Deploy
+      - name: Deploy (Windows)
         uses: actions/upload-artifact@v3
         if: startsWith(matrix.config.name, 'Windows')
         with: 
           name: artifact
-          path: dist/occt-*.tgz
+          path: dist/win64/*
       - name: Deploy
         uses: actions/upload-artifact@v3
         if: startsWith(matrix.config.name, 'Ubuntu')
@@ -117,3 +117,30 @@ jobs:
           name: artifact
           path: dist/occt-*
            
+      - name: Create Release 
+        id: create_release
+        if: startsWith(github.event.ref, 'refs/tags/v')
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        if: startsWith(github.event.ref, 'refs/tags/v')
+        uses:  softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
+             dist/win64/*.tgz
+             dist/win64/*.zip
+        # with:
+        #   upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        #   asset_path: dist/win64/
+        #   asset_name: occt-${{github.ref_name}}${{runner.os}}.zip
+        #   asset_content_type: application/zip
